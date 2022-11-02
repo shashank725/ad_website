@@ -1,4 +1,8 @@
 # Virtual Env
 venv/
 
-
+# __pycache__/
+__pycache__/
+ad_website/__pycache__/
+main/__pycache__/
+main/migrations/__pycache__/
