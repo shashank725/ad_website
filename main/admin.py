@@ -6,4 +6,4 @@ from .models import *
 admin.site.register(UserProfile)
 admin.site.register(Car)
 admin.site.register(Ad)
-admin.site.register(UserAd)
+admin.site.register(Address)

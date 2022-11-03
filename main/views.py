@@ -1,8 +1,12 @@
 from django.shortcuts import render
+from django.shortcuts import get_object_or_404
+from django.contrib.auth import authenticate, login
+from django.views.decorators.csrf import csrf_exempt
 
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.permissions import IsAuthenticated
 
 from .models import *
 from .serializers import *
@@ -24,8 +28,8 @@ class UserRegistrationView(APIView):
     def post(self, request, format=None):
         serializer = UserSerializer(data=request.data)
 
-        if serializer.is_valid(raise_exception=True):
-        # if serializer.is_valid():
+        # if serializer.is_valid(raise_exception=True):
+        if serializer.is_valid():
             user = serializer.save()
             print(user)
             token = get_tokens_for_user(user)
@@ -46,8 +50,8 @@ class CarView(APIView):
         serializer = CarSerializer(cars, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
     def post(self, request, format=None):
-        serializer = CarSerializer(data=request.data)
-        if serializer.is_valid():
+        serializer = CarSerializer(data=request.data, context={"user":request.user})
+        if serializer.is_valid(raise_exception=True):
             serializer.save()
             return Response({'success': True}, status=status.HTTP_201_CREATED)
         return Response({'success': False}, status=status.HTTP_400_BAD_REQUEST)
@@ -66,8 +70,8 @@ class CarView(APIView):
 class AdView(APIView):
     def get(self, request, pk=None, format=None):
         if pk is not None:
-            ads = Ad.objects.all(id=pk)
-            serializer = AdSerializer(ads, many=True)
+            ad = get_object_or_404(Ad, pk=pk)
+            serializer = AdSerializer(ad)
             return Response(serializer.data, status=status.HTTP_200_OK)
 
     def post(self, request, format=None):
@@ -89,3 +93,17 @@ class AdView(APIView):
         ad = Ad.objects.get(id=pk)
         ad.delete()
         return Response({'success': True}, status=status.HTTP_200_OK)
+
+# @csrf_exempt
+# class UserLoginView(APIView):
+#     def post(self, request, format=None):
+#         serializer = UserLoginSerializer(data=request.data)
+#         serializer.is_valid(raise_exception=True)
+#         email = serializer.data.get('email')
+#         password = serializer.data.get('password')
+#         user = authenticate(email=email, password=password)
+#         if user is not None:
+#             token = get_tokens_for_user(user)
+#             return Response({'token':token, 'message':'Login Success'}, status=status.HTTP_200_OK)
+#         else:
+#             return Response({'errors':{'non_field_errors':['Email or Password is not valid']}}, status=status.HTTP_400_BAD_REQUEST)
