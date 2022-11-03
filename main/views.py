@@ -67,6 +67,7 @@ class CarView(APIView):
         car.delete()
         return Response({'success': True}, status=status.HTTP_200_OK)
 
+
 class AdView(APIView):
     def get(self, request, pk=None, format=None):
         if pk is not None:
@@ -76,7 +77,7 @@ class AdView(APIView):
 
     def post(self, request, format=None):
         serializer = AdSerializer(data=request.data)
-        if serializer.is_valid():
+        if serializer.is_valid(raise_exception=True):
             serializer.save()
             return Response({'success': True}, status=status.HTTP_201_CREATED)
         return Response({'success': False}, status=status.HTTP_400_BAD_REQUEST)

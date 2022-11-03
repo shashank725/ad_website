@@ -42,4 +42,4 @@ class Ad(models.Model):
     ad_image = models.ImageField(upload_to='images/', blank=True, null=True)
 
     def __str__(self):
-        return self.a_id, self.title, self.price_per_km
+        return str(self.a_id)

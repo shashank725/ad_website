@@ -54,6 +54,11 @@ class CarSerializer(serializers.ModelSerializer):
 
 
 class AdSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Ad
+        fields = '__all__'
+
+class AdDetailSerializer(serializers.ModelSerializer):
     user_name = serializers.SerializerMethodField()
     vehicle_brand_and_model = serializers.SerializerMethodField()
 
