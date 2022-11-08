@@ -35,11 +35,6 @@ class UserSerializer(serializers.ModelSerializer):
 
         return user
 
-class UserLoginSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = User
-        fields = ['email', 'password']
-
 
 class CarSerializer(serializers.ModelSerializer):
     class Meta:

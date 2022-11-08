@@ -21,8 +21,8 @@ def get_tokens_for_user(user):
         'access': str(refresh.access_token),
     }
 
-# Create your views here.
 
+# Create your views here.
 class UserRegistrationView(APIView):
     # renderer_classes = [UserRenderers]
     def post(self, request, format=None):
@@ -96,15 +96,17 @@ class AdView(APIView):
         return Response({'success': True}, status=status.HTTP_200_OK)
 
 # @csrf_exempt
-# class UserLoginView(APIView):
-#     def post(self, request, format=None):
-#         serializer = UserLoginSerializer(data=request.data)
-#         serializer.is_valid(raise_exception=True)
-#         email = serializer.data.get('email')
-#         password = serializer.data.get('password')
-#         user = authenticate(email=email, password=password)
-#         if user is not None:
-#             token = get_tokens_for_user(user)
-#             return Response({'token':token, 'message':'Login Success'}, status=status.HTTP_200_OK)
-#         else:
-#             return Response({'errors':{'non_field_errors':['Email or Password is not valid']}}, status=status.HTTP_400_BAD_REQUEST)
+class UserLoginView(APIView):
+    def post(self, request, format=None):
+        # serializer = UserLoginSerializer(data=request.data)
+        # serializer.is_valid(raise_exception=True)
+        # email = serializer.data.get('email')
+        # password = serializer.data.get('password')
+        username = request.data.get('username')
+        password = request.data.get('password')
+        user = authenticate(username=username, password=password)
+        if user is not None:
+            token = get_tokens_for_user(user)
+            return Response({'token':token, 'message':'Login Success'}, status=status.HTTP_200_OK)
+        else:
+            return Response({'errors':{'non_field_errors':['Email or Password is not valid']}}, status=status.HTTP_400_BAD_REQUEST)

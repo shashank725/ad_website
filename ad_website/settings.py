@@ -159,3 +159,8 @@ SIMPLE_JWT = {
 
     'JTI_CLAIM': 'jti',
 }
+
+# #Authentication backends
+# AUTHENTICATION_BACKENDS = (
+#         'django.contrib.auth.backends.ModelBackend',
+#     )
